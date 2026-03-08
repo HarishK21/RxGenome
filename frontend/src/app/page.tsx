@@ -107,15 +107,12 @@ export default function LandingPage() {
                 Try Demo Case
               </Button>
             </Link>
-            <Link href="/cases/new">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 gap-2 px-8 h-12"
-              >
-                Create Your Case
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+            <Link
+              href="/cases/new"
+              className="inline-flex items-center justify-center gap-2 px-8 h-12 rounded-lg border border-white/30 text-white font-semibold text-sm hover:bg-white/10 transition-colors"
+            >
+              Create Your Case
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
