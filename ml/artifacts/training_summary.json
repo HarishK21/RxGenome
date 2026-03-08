@@ -1,0 +1,24 @@
+{
+  "dataset": "Breast Cancer Wisconsin (genomic-renamed)",
+  "n_samples": 569,
+  "n_features": 30,
+  "split": "80/20 stratified",
+  "train_size": 455,
+  "test_size": 114,
+  "models": {
+    "logistic_regression": {
+      "accuracy": 0.9649122807017544,
+      "roc_auc": 0.9953703703703703
+    },
+    "random_forest": {
+      "accuracy": 0.956140350877193,
+      "roc_auc": 0.9937169312169312
+    },
+    "xgboost": {
+      "accuracy": 0.9473684210526315,
+      "roc_auc": 0.9933862433862434
+    }
+  },
+  "best_model": "xgboost",
+  "best_roc_auc": 0.9933862433862434
+}

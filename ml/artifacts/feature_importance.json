@@ -1,0 +1,122 @@
+[
+  {
+    "feature": "SNP_PIK3CA_perim_w",
+    "importance": 0.35762178897857666
+  },
+  {
+    "feature": "SNP_BRCA2_radius_w",
+    "importance": 0.25229570269584656
+  },
+  {
+    "feature": "SNP_PGR_cp_w",
+    "importance": 0.06377030164003372
+  },
+  {
+    "feature": "SNP_STK11_concave_pts",
+    "importance": 0.06375227868556976
+  },
+  {
+    "feature": "SNP_RAD51C_texture_se",
+    "importance": 0.058389075100421906
+  },
+  {
+    "feature": "SNP_CDK12_compact_w",
+    "importance": 0.034692224115133286
+  },
+  {
+    "feature": "SNP_MAP3K1_area_w",
+    "importance": 0.02421032451093197
+  },
+  {
+    "feature": "SNP_ERBB2_texture_w",
+    "importance": 0.019894754514098167
+  },
+  {
+    "feature": "SNP_ATM_area",
+    "importance": 0.01754501834511757
+  },
+  {
+    "feature": "SNP_BRIP1_radius_se",
+    "importance": 0.013578656129539013
+  },
+  {
+    "feature": "SNP_NF1_compact_se",
+    "importance": 0.011570814996957779
+  },
+  {
+    "feature": "SNP_ESR1_concav_w",
+    "importance": 0.010882297530770302
+  },
+  {
+    "feature": "SNP_NBN_area_se",
+    "importance": 0.009446735493838787
+  },
+  {
+    "feature": "SNP_GATA3_smooth_w",
+    "importance": 0.008962624706327915
+  },
+  {
+    "feature": "SNP_MRE11_smooth_se",
+    "importance": 0.008374836295843124
+  },
+  {
+    "feature": "SNP_TP53_texture",
+    "importance": 0.006767284125089645
+  },
+  {
+    "feature": "SNP_RAD51D_perim_se",
+    "importance": 0.006750077940523624
+  },
+  {
+    "feature": "SNP_PALB2_smoothness",
+    "importance": 0.005536913871765137
+  },
+  {
+    "feature": "SNP_FOXA1_symm_w",
+    "importance": 0.00542813865467906
+  },
+  {
+    "feature": "SNP_MLH1_symm_se",
+    "importance": 0.003964203875511885
+  },
+  {
+    "feature": "SNP_BARD1_fractal",
+    "importance": 0.003202493768185377
+  },
+  {
+    "feature": "SNP_PTEN_concavity",
+    "importance": 0.0028277901001274586
+  },
+  {
+    "feature": "SNP_MSH2_fract_se",
+    "importance": 0.002610612427815795
+  },
+  {
+    "feature": "SNP_APC_cp_se",
+    "importance": 0.0022906793747097254
+  },
+  {
+    "feature": "SNP_CDH1_compactness",
+    "importance": 0.002144019352272153
+  },
+  {
+    "feature": "SNP_MYC_fract_w",
+    "importance": 0.0012071586679667234
+  },
+  {
+    "feature": "SNP_RAD51_symmetry",
+    "importance": 0.001184109947644174
+  },
+  {
+    "feature": "SNP_RB1_concav_se",
+    "importance": 0.0010990549344569445
+  },
+  {
+    "feature": "SNP_BRCA1_radius",
+    "importance": 0.0
+  },
+  {
+    "feature": "SNP_CHEK2_perimeter",
+    "importance": 0.0
+  }
+]

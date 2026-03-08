@@ -1,0 +1,87 @@
+{
+  "rules": [
+    {
+      "medication": "tamoxifen",
+      "gene": "CYP2D6",
+      "genotype_phenotype": {
+        "poor_metabolizer": {
+          "genotypes": ["*4/*4", "*4/*5", "*5/*5"],
+          "caution_level": "high",
+          "summary": "CYP2D6 poor metabolizer status significantly reduces conversion of tamoxifen to its active metabolite endoxifen. This may result in reduced therapeutic efficacy.",
+          "discussion_points": [
+            "Consider alternative endocrine therapy (e.g., aromatase inhibitor if postmenopausal)",
+            "CYP2D6 inhibitor co-medications should be reviewed",
+            "Endoxifen plasma level monitoring may be informative",
+            "Discuss with oncology team regarding dose adjustment or drug switch"
+          ],
+          "evidence": "PharmGKB Level 1A - CPIC Guideline"
+        },
+        "intermediate_metabolizer": {
+          "genotypes": ["*1/*4", "*1/*5", "*2/*4"],
+          "caution_level": "moderate",
+          "summary": "CYP2D6 intermediate metabolizer status may moderately reduce conversion of tamoxifen to endoxifen. Clinical impact varies.",
+          "discussion_points": [
+            "Monitor clinical response to tamoxifen therapy",
+            "Avoid strong CYP2D6 inhibitors (e.g., paroxetine, fluoxetine)",
+            "Consider endoxifen level testing if poor response suspected"
+          ],
+          "evidence": "PharmGKB Level 1A - CPIC Guideline"
+        },
+        "normal_metabolizer": {
+          "genotypes": ["*1/*1", "*1/*2", "*2/*2"],
+          "caution_level": "low",
+          "summary": "CYP2D6 normal metabolizer status supports standard tamoxifen dosing. Expected adequate conversion to endoxifen.",
+          "discussion_points": [
+            "Standard dosing is appropriate",
+            "Continue to avoid strong CYP2D6 inhibitors"
+          ],
+          "evidence": "PharmGKB Level 1A - CPIC Guideline"
+        }
+      }
+    },
+    {
+      "medication": "clopidogrel",
+      "gene": "CYP2C19",
+      "genotype_phenotype": {
+        "poor_metabolizer": {
+          "genotypes": ["*2/*2", "*2/*3", "*3/*3"],
+          "caution_level": "high",
+          "summary": "CYP2C19 poor metabolizer status significantly reduces activation of clopidogrel. Patients may not receive adequate antiplatelet effect, increasing cardiovascular risk.",
+          "discussion_points": [
+            "Consider alternative antiplatelet therapy (e.g., prasugrel or ticagrelor)",
+            "FDA boxed warning applies for CYP2C19 poor metabolizers",
+            "Platelet function testing may inform clinical decisions",
+            "Consult cardiology for alternative regimen"
+          ],
+          "evidence": "PharmGKB Level 1A - CPIC Guideline / FDA Boxed Warning"
+        },
+        "intermediate_metabolizer": {
+          "genotypes": ["*1/*2", "*1/*3"],
+          "caution_level": "moderate",
+          "summary": "CYP2C19 intermediate metabolizer status may reduce clopidogrel activation. Effect on clinical outcomes is variable.",
+          "discussion_points": [
+            "Monitor for adequate antiplatelet response",
+            "Consider alternative therapy if high cardiovascular risk",
+            "Platelet function testing may be informative"
+          ],
+          "evidence": "PharmGKB Level 1A - CPIC Guideline"
+        },
+        "normal_metabolizer": {
+          "genotypes": ["*1/*1"],
+          "caution_level": "low",
+          "summary": "CYP2C19 normal metabolizer status supports standard clopidogrel dosing with expected antiplatelet effect.",
+          "discussion_points": [
+            "Standard dosing is appropriate",
+            "Continue monitoring for bleeding risk as per guidelines"
+          ],
+          "evidence": "PharmGKB Level 1A - CPIC Guideline"
+        }
+      }
+    }
+  ],
+  "medication_synonyms": {
+    "tamoxifen": ["nolvadex", "soltamox", "tamoxifen citrate"],
+    "clopidogrel": ["plavix", "clopidogrel bisulfate"]
+  },
+  "disclaimer": "This information is for educational purposes only and should not replace professional medical advice. Always consult with a healthcare provider or pharmacist for medication decisions."
+}
