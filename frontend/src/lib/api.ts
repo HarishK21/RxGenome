@@ -1,4 +1,14 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
+
+function toNetworkError(error: unknown): Error {
+  const original =
+    error instanceof Error && error.message
+      ? ` Original error: ${error.message}`
+      : "";
+  return new Error(
+    `Unable to reach the API at ${API_URL}. Make sure the backend is running and this frontend origin is allowed by CORS.${original}`
+  );
+}
 
 export interface Case {
   id: string;
@@ -88,11 +98,16 @@ export async function createCase(data: {
   condition?: string;
   medication_name?: string;
 }): Promise<Case> {
-  const res = await fetch(`${API_URL}/cases`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_URL}/cases`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    throw toNetworkError(error);
+  }
   if (!res.ok) throw new Error(await res.text());
   return res.json();
 }

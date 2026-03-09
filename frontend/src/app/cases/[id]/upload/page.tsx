@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -37,6 +37,7 @@ export default function UploadPage() {
   const [medicationName, setMedicationName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState<Record<string, boolean>>({});
+  const [error, setError] = useState("");
 
   const handleFileChange =
     (setter: (f: File | null) => void) =>
@@ -45,6 +46,7 @@ export default function UploadPage() {
     };
 
   const handleContinue = async () => {
+    setError("");
     setUploading(true);
     try {
       if (genomeFile) {
@@ -65,7 +67,8 @@ export default function UploadPage() {
       }
       router.push(`/cases/${caseId}/processing`);
     } catch (err) {
-      console.error(err);
+      const message = err instanceof Error ? err.message : "Failed to upload files";
+      setError(message);
       setUploading(false);
     }
   };
@@ -238,6 +241,11 @@ export default function UploadPage() {
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
+        {error && (
+          <p className="mt-3 text-sm text-destructive" role="alert">
+            {error}
+          </p>
+        )}
       </main>
     </div>
   );

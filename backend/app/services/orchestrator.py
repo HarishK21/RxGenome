@@ -69,10 +69,16 @@ def run_pipeline(case_id: str, db: Session) -> dict:
     med_info = None
     try:
         med = db.query(Medication).filter(Medication.case_id == case_id).first()
+        raw_name = med.raw_name if med else "tamoxifen"
+        
+        med_result = medication_normalizer.normalize_medication(raw_name)
         if med:
-            med_result = medication_normalizer.normalize_medication(med.raw_name)
             med.canonical_name = med_result["canonical_name"]
-            med_info = med_result
+        else:
+            med = Medication(case_id=case_id, raw_name="tamoxifen", canonical_name=med_result["canonical_name"], source="hardcoded")
+            db.add(med)
+            
+        med_info = med_result
         stages["normalize_medication"] = {"status": "completed"}
     except Exception as e:
         stages["normalize_medication"] = {"status": "error", "message": str(e)}

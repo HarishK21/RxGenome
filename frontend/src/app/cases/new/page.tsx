@@ -8,28 +8,39 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { createCase } from "@/lib/api";
 
 export default function NewCasePage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [medication, setMedication] = useState("");
-
+  const [condition, setCondition] = useState("breast_cancer_risk");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
+    setError("");
     setLoading(true);
     try {
       const c = await createCase({
         name,
-        condition: "breast_cancer_risk",
+        condition: condition,
 
         medication_name: medication || undefined,
       });
       router.push(`/cases/${c.id}/upload`);
-    } catch {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to create case";
+      setError(message);
       setLoading(false);
     }
   };
@@ -77,12 +88,16 @@ export default function NewCasePage() {
               </div>
               <div>
                 <Label htmlFor="condition">Condition</Label>
-                <Input
-                  id="condition"
-                  value="Breast Cancer Risk Assessment"
-                  disabled
-                  className="bg-muted"
-                />
+                <Select value={condition} onValueChange={(val) => val && setCondition(val)}>
+                  <SelectTrigger id="condition" className="w-full mt-1.5">
+                    <SelectValue placeholder="Select a condition to assess" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="breast_cancer_risk">Breast Cancer Risk Assessment</SelectItem>
+                    <SelectItem value="cardiovascular_risk">Cardiovascular Disease Risk</SelectItem>
+                    <SelectItem value="type2_diabetes_risk">Type 2 Diabetes Risk</SelectItem>
+                  </SelectContent>
+                </Select>
                 <p className="text-xs text-muted-foreground mt-1">
                   Disease risk prediction based on genomic feature analysis
                 </p>
@@ -110,6 +125,11 @@ export default function NewCasePage() {
           >
             {loading ? "Creating..." : "Create Case & Continue"}
           </Button>
+          {error && (
+            <p className="mt-3 text-sm text-destructive" role="alert">
+              {error}
+            </p>
+          )}
         </form>
       </main>
     </div>

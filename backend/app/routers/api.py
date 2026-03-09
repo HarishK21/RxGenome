@@ -30,6 +30,7 @@ def create_case(case_data: CaseCreate, db: Session = Depends(get_db)):
         status="created",
     )
     db.add(case)
+    db.flush()
 
     # If medication provided, add it
     if case_data.medication_name:

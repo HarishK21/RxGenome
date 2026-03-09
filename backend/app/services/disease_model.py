@@ -87,12 +87,18 @@ def predict(features: dict, model_name: str = "xgboost") -> dict:
     feature_imp = load_feature_importance()
     top_features = []
     for fi in feature_imp[:10]:
-        feat_name = fi["feature"]
+        raw_feat = fi["feature"]
+        real_feat = raw_feat
+        if raw_feat.startswith("SNP_"):
+            parts = raw_feat.split("_")
+            if len(parts) > 1:
+                real_feat = parts[1]
+                
         top_features.append({
-            "feature": feat_name,
+            "feature": real_feat,
             "importance": fi["importance"],
-            "value": features.get(feat_name, 0.0),
-            "biological_context": FEATURE_BIO_CONTEXT.get(feat_name, "Genomic feature variant"),
+            "value": features.get(raw_feat, 0.0),
+            "biological_context": FEATURE_BIO_CONTEXT.get(raw_feat, "Genomic feature variant"),
         })
 
     model_metrics = metrics.get(model_name, metrics.get("xgboost", {}))
