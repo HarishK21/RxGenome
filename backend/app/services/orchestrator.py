@@ -18,6 +18,13 @@ def run_pipeline(case_id: str, db: Session) -> dict:
 
     stages = {}
 
+    # Clear prior analysis records in case of double-fire or re-run
+    db.query(ReportField).filter(ReportField.case_id == case_id).delete()
+    db.query(Prediction).filter(Prediction.case_id == case_id).delete()
+    db.query(PGxFinding).filter(PGxFinding.case_id == case_id).delete()
+    db.query(Summary).filter(Summary.case_id == case_id).delete()
+    db.commit()
+
     # Stage 1: Parse genome
     stages["parse_genome"] = {"status": "running"}
     try:

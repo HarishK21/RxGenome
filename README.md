@@ -1,141 +1,70 @@
-# RxGenome
+<div align="center">
+  
+# 🧬 RxGenome
+**Explainable Disease Risk & Pharmacogenomic Insights**
 
-**Explainable disease risk and medication-response insights from genetics and reports.**
+*Built for the BACSA Hacks 2026 Open Challenge (Disease Detection & Health Improvement)*
 
-An educational precision-medicine interpretation assistant that combines disease detection from genomic/SNP-style data, medical report visualization, pharmacogenomic medication caution summaries, and Gemini-powered multimodal document understanding.
+</div>
 
-> ⚠️ **Educational Tool Only** — RxGenome is not a diagnostic device. All results should be discussed with a qualified healthcare provider.
+<br />
 
-## Features
+## 🎯 The Vision
 
-- 🧬 **Genomic Risk Analysis** — ML-powered disease risk prediction (XGBoost) from SNP-style feature matrices
-- 💊 **Pharmacogenomic Cautions** — Evidence-based medication-gene interaction alerts (CYP2D6/tamoxifen, CYP2C19/clopidogrel)
-- 📋 **Report Understanding** — Gemini-powered extraction of lab values from PDFs and images
-- 📊 **Explainable Results** — Feature importance charts with biological context
-- 🩺 **Doctor Discussion Notes** — Auto-generated clinician summaries with suggested discussion questions
-- ✨ **Gemini Integration** — Plain-English explanations, document understanding, medication label reading
+At the intersection of technology and biology, **RxGenome** empowers patients and healthcare providers by turning raw, complex medical data into actionable biological insights. 
 
-## Tech Stack
+Built in 24 hours for **BACSA Hacks**, RxGenome tackles the Open Challenge by addressing both **Disease Detection** and **Health Improvement**. It serves as a precision-medicine interpretation assistant—combining machine learning for genomic risk prediction, multimodal AI for report understanding, and evidence-based pharmacogenomic (PGx) rules to flag dangerous medication interactions.
 
-| Layer | Technologies |
+> ⚠️ **Educational Tool Only** — RxGenome is a demonstration of applied health-tech and is not a diagnostic device. All results should be discussed with a qualified healthcare provider.
+
+---
+
+## ✨ Key Features
+
+### 🧬 Explainable Disease Detection
+- **Machine Learning Analysis:** Utilizes a trained XGBoost classifier over genomic/SNP-style feature matrices to accurately predict disease risk probability.
+- **Biological Context:** Instead of black-box predictions, RxGenome provides an explainable Feature Importance chart, mapping statistical anomalies back to standard HGNC gene symbols (e.g., `BRCA1`, `TP53`, `PIK3CA`).
+
+### 💊 Health Improvement via Pharmacogenomics (PGx)
+- **Medication Safety:** Cross-references a patient's prescription data against FDA and CPIC guidelines.
+- **Metabolizer Alerts:** Flags severe gene-drug interactions (e.g., *CYP2D6* poor metabolizers taking Tamoxifen), generating specific discussion points to prevent adverse drug events.
+
+### 📋 Multimodal Report Understanding
+- **AI-Powered Extraction:** Integrates Google Gemini (2.0 Flash / 2.5 Pro) to physically read unstructured medical PDFs and lab report images.
+- **Smart Formatting:** Automatically extracts vital lab values, identifies units and reference ranges, and flags abnormal biomarkers.
+
+### 🩺 Clinician & Patient Summaries
+- **Patient-Friendly Breakdowns:** Dynamically generates an empathetic, 8th-grade reading level summary of the patient's risk profile and PGx alerts.
+- **Doctor Discussion Notes:** Auto-generates structured clinical notes, pulling together all extracted lab anomalies, model ROC-AUC confidences, and PGx cautions—equipping patients for their next appointment.
+
+---
+
+## 🛠️ The Tech Stack
+
+RxGenome leverages a modern, decoupled architecture designed for speed, accuracy, and responsive UX.
+
+| Layer | Technology |
 |-------|-------------|
-| **Frontend** | Next.js 16, TypeScript, Tailwind CSS v4, shadcn/ui, Recharts |
-| **Backend** | FastAPI, Python, Pydantic, SQLAlchemy |
-| **Database** | SQLite (local fallback) |
-| **ML** | XGBoost, RandomForest, Logistic Regression, scikit-learn, pandas |
-| **AI** | Google Gemini API (2.0 Flash + 2.5 Pro) |
+| **Frontend UI** | Next.js (React), TypeScript, Tailwind CSS, shadcn/ui, Recharts |
+| **Backend API** | FastAPI (Python), SQLAlchemy, Pydantic |
+| **Database** | SQLite |
+| **Machine Learning** | XGBoost, scikit-learn, pandas |
+| **Generative AI** | Google Gemini API |
 
-## Quick Start
+---
 
-### Prerequisites
-- Node.js 18+
-- Python 3.10+
-- (Optional) Gemini API key
+## 🔬 How It Works
 
-### 1. Clone & Setup
+1. **Input Data:** The user uploads a unified case containing their genomic variant file (CSV/VCF), unstructured lab reports (PDF/Images), and current medication profiles.
+2. **Orchestration Pipeline:** The FastAPI backend securely routes the data through four stages:
+   - *Genomic Parsing*
+   - *Gemini OCR Document Extraction*
+   - *Medication Normalization*
+   - *XGBoost Risk Prediction*
+3. **PGx Evaluation:** The rule engine evaluates the identified genomic variants against the canonical medication sequence.
+4. **Synthesis:** Gemini synthesizes the structured output of the ML model, the PGx rules, and the lab arrays into tailored conversational summaries.
+5. **Insights Dashboard:** The React frontend renders a beautiful, interactive matrix of the patient's holistic health profile.
 
-```bash
-git clone <this-repo>
-cd BASCA2026
-```
+---
 
-### 2. Train ML Models
-
-```bash
-py ml/train.py
-```
-
-This trains 3 models (Logistic Regression, RandomForest, XGBoost) and saves artifacts to `ml/artifacts/`.
-
-### 3. Start Backend
-
-```bash
-cd backend
-cp .env.example .env
-# Edit .env to add your GEMINI_API_KEY (optional — demo works without it)
-py -m uvicorn app.main:app --reload --port 8000
-```
-
-### 4. Start Frontend
-
-```bash
-cd frontend
-cp .env.example .env.local
-npm install
-npm run dev
-```
-
-### 5. Open App
-
-Visit [http://localhost:3000](http://localhost:3000)
-
-**Quick Demo:** Click "Demo" → Select a persona → Results appear instantly.
-
-## Demo Flow (2-3 minutes)
-
-1. Open http://localhost:3000
-2. Click **"Try Demo Case"** or navigate to **/demo**
-3. Choose a persona (Sarah Chen = high risk, James Morrison = low risk)
-4. Click **"Run Demo Analysis"**
-5. View the results dashboard:
-   - Disease risk score and tier
-   - Feature importance chart with biological context
-   - PGx medication caution (tamoxifen/CYP2D6)
-   - Extracted lab values
-   - Plain-English summary
-   - Doctor discussion note
-6. Click **"Doctor Note"** to export/print
-
-## Project Structure
-
-```
-BASCA2026/
-├── frontend/          # Next.js 16 + TypeScript + Tailwind + shadcn/ui
-│   └── src/
-│       ├── app/       # App Router pages
-│       ├── components/# shadcn/ui components
-│       └── lib/       # API client, utilities
-├── backend/           # FastAPI + Python
-│   └── app/
-│       ├── models/    # SQLAlchemy + Pydantic
-│       ├── routers/   # API routes
-│       └── services/  # Business logic
-├── ml/                # ML training pipeline
-│   ├── train.py       # Training script
-│   └── artifacts/     # Model files, metrics
-├── data/
-│   ├── demo/          # Seeded demo data
-│   └── pgx_rules.json # PGx rule engine
-└── docs/
-    ├── plan.md        # Implementation plan
-    └── task.md        # Build checklist
-```
-
-## ML Pipeline
-
-| Model | Accuracy | ROC-AUC |
-|-------|----------|---------|
-| Logistic Regression | ~96% | ~99% |
-| RandomForest | ~95% | ~99% |
-| **XGBoost (final)** | **~95%** | **~99%** |
-
-- Dataset: Breast Cancer Wisconsin (genomic-renamed features)
-- Split: 80/20 stratified
-- Features mapped to SNP-style genomic nomenclature (BRCA1, TP53, CHEK2, etc.)
-
-## Gemini Integration
-
-Gemini is used for:
-1. **PDF/image extraction** — Structured extraction of lab values
-2. **Medication label reading** — OCR + structured JSON
-3. **Patient summary** — Plain-English explanation of findings
-4. **Clinician summary** — Technical clinical interpretation
-5. **Doctor note** — Discussion-ready document generation
-
-Works without Gemini API key using built-in mock data for demos.
-
-## BACSA Hacks 2026
-
-Built for the BACSA Hacks Open Challenge and Gemini bonus track.
-
-**Product Positioning:** An educational tool demonstrating how ML and AI can support informed medical discussions through explainable disease risk prediction and pharmacogenomic awareness.
+*RxGenome was proudly developed for the BACSA Hacks 2026 hackathon hosted by the Biotech and Computer Science Association at the University of Toronto.*
