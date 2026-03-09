@@ -67,4 +67,4 @@ RxGenome leverages a modern, decoupled architecture designed for speed, accuracy
 
 ---
 
-*RxGenome was proudly developed for the BACSA Hacks 2026 hackathon hosted by the Biotech and Computer Science Association at the University of Toronto.*
+
