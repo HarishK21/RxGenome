@@ -9,8 +9,6 @@ from datetime import datetime
 class CaseCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
     condition: str = "breast_cancer_risk"
-    is_demo: bool = False
-    demo_persona: Optional[str] = None
     medication_name: Optional[str] = None
     genotype: Optional[str] = None
     notes: Optional[str] = None
@@ -20,8 +18,6 @@ class CaseResponse(BaseModel):
     name: str
     condition: str
     status: str
-    is_demo: int
-    demo_persona: Optional[str]
     created_at: datetime
     updated_at: datetime
 
@@ -126,12 +122,3 @@ class AnalysisStageUpdate(BaseModel):
     status: str  # pending, running, completed, error
     message: Optional[str] = None
 
-# --- Demo schemas ---
-class DemoPersona(BaseModel):
-    id: str
-    name: str
-    description: str
-    condition: str
-    medication: Optional[str] = None
-    genotype: Optional[str] = None
-    risk_level: str

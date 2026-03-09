@@ -17,8 +17,6 @@ class Case(Base):
     name = Column(String(255), nullable=False)
     condition = Column(String(255), default="breast_cancer_risk")
     status = Column(String(50), default="created")  # created, uploading, processing, completed, error
-    is_demo = Column(Integer, default=0)
-    demo_persona = Column(String(50), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

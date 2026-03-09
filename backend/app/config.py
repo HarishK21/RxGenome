@@ -13,6 +13,6 @@ UPLOAD_DIR = os.getenv("UPLOAD_DIR", os.path.join(os.path.dirname(__file__), "..
 ML_ARTIFACT_DIR = os.getenv("ML_ARTIFACT_DIR", os.path.join(os.path.dirname(__file__), "..", "..", "ml", "artifacts"))
 PGX_RULES_PATH = os.getenv("PGX_RULES_PATH", os.path.join(os.path.dirname(__file__), "..", "..", "data", "pgx_rules.json"))
 DEMO_DATA_DIR = os.getenv("DEMO_DATA_DIR", os.path.join(os.path.dirname(__file__), "..", "..", "data", "demo"))
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+CORS_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)

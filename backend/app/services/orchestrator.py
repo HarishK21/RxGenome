@@ -21,20 +21,17 @@ def run_pipeline(case_id: str, db: Session) -> dict:
     # Stage 1: Parse genome
     stages["parse_genome"] = {"status": "running"}
     try:
-        if case.is_demo and case.demo_persona:
-            genome_data = genome_parser.parse_demo_genome(case.demo_persona)
+        genome_upload = db.query(Upload).filter(
+            Upload.case_id == case_id, Upload.upload_type == "genome"
+        ).first()
+        if genome_upload:
+            genome_data = genome_parser.parse_genome_file(genome_upload.filepath)
         else:
-            genome_upload = db.query(Upload).filter(
-                Upload.case_id == case_id, Upload.upload_type == "genome"
-            ).first()
-            if genome_upload:
-                genome_data = genome_parser.parse_genome_file(genome_upload.filepath)
-            else:
-                genome_data = genome_parser.parse_demo_genome("high_risk")
+            raise ValueError("No genome file uploaded for this case")
         stages["parse_genome"] = {"status": "completed"}
     except Exception as e:
         stages["parse_genome"] = {"status": "error", "message": str(e)}
-        genome_data = genome_parser.parse_demo_genome("high_risk")
+        genome_data = {"features": {}} # fallback empty features so pipeline doesn't crash completely
 
     # Stage 2: Extract report
     stages["extract_report"] = {"status": "running"}
@@ -49,12 +46,10 @@ def run_pipeline(case_id: str, db: Session) -> dict:
                 report_fields_data = gemini_extractor.extract_report_from_pdf(report_upload.filepath)
             else:
                 report_fields_data = gemini_extractor.extract_report_from_image(report_upload.filepath)
-        else:
-            report_fields_data = gemini_extractor._mock_report_fields()
         stages["extract_report"] = {"status": "completed"}
     except Exception as e:
         stages["extract_report"] = {"status": "error", "message": str(e)}
-        report_fields_data = gemini_extractor._mock_report_fields()
+        report_fields_data = []
 
     # Save report fields
     for rf in report_fields_data:
@@ -65,7 +60,7 @@ def run_pipeline(case_id: str, db: Session) -> dict:
             unit=rf.get("unit"),
             reference_range=rf.get("reference_range"),
             is_abnormal=rf.get("is_abnormal", 0),
-            source="upload" if report_upload else "demo" if 'report_upload' in dir() else "demo",
+            source="upload" if report_upload else "unknown",
         )
         db.add(db_rf)
 
@@ -78,13 +73,6 @@ def run_pipeline(case_id: str, db: Session) -> dict:
             med_result = medication_normalizer.normalize_medication(med.raw_name)
             med.canonical_name = med_result["canonical_name"]
             med_info = med_result
-        elif case.is_demo:
-            med_info = medication_normalizer.normalize_medication("tamoxifen")
-            db_med = Medication(
-                case_id=case_id, raw_name="tamoxifen",
-                canonical_name="tamoxifen", source="demo"
-            )
-            db.add(db_med)
         stages["normalize_medication"] = {"status": "completed"}
     except Exception as e:
         stages["normalize_medication"] = {"status": "error", "message": str(e)}
@@ -116,7 +104,8 @@ def run_pipeline(case_id: str, db: Session) -> dict:
     pgx_result = {"found": False}
     try:
         if med_info and med_info.get("has_pgx_rule"):
-            # Look for genotype from case metadata or use demo default
+            # Look for genotype from case metadata
+
             genotype = None
             pgx_result = pgx_engine.lookup_pgx(med_info["canonical_name"], genotype)
             db_pgx = PGxFinding(

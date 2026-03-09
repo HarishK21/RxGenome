@@ -5,21 +5,10 @@ export interface Case {
   name: string;
   condition: string;
   status: string;
-  is_demo: number;
-  demo_persona: string | null;
   created_at: string;
   updated_at: string;
 }
 
-export interface DemoPersona {
-  id: string;
-  name: string;
-  description: string;
-  condition: string;
-  medication: string | null;
-  genotype: string | null;
-  risk_level: string;
-}
 
 export interface FeatureImportance {
   feature: string;
@@ -97,8 +86,6 @@ export interface AnalysisResult {
 export async function createCase(data: {
   name: string;
   condition?: string;
-  is_demo?: boolean;
-  demo_persona?: string;
   medication_name?: string;
 }): Promise<Case> {
   const res = await fetch(`${API_URL}/cases`, {
@@ -172,18 +159,3 @@ export async function getResults(caseId: string): Promise<FullResults> {
   return res.json();
 }
 
-export async function getDemoPersonas(): Promise<DemoPersona[]> {
-  const res = await fetch(`${API_URL}/demo/personas`);
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
-}
-
-export async function runDemo(
-  personaId: string
-): Promise<{ case_id: string } & AnalysisResult> {
-  const res = await fetch(`${API_URL}/demo/run/${personaId}`, {
-    method: "POST",
-  });
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
-}

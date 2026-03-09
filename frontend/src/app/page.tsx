@@ -67,11 +67,7 @@ export default function LandingPage() {
             <span className="font-bold text-lg tracking-tight">RxGenome</span>
           </Link>
           <div className="flex items-center gap-3">
-            <Link href="/demo">
-              <Button variant="ghost" size="sm">
-                Demo
-              </Button>
-            </Link>
+
             <Link href="/cases/new">
               <Button size="sm" className="gradient-primary text-white border-0 hover:opacity-90">
                 Create Case
@@ -98,15 +94,7 @@ export default function LandingPage() {
             explanations — all designed for informed doctor discussions.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/demo">
-              <Button
-                size="lg"
-                className="bg-white text-gray-900 hover:bg-white/90 gap-2 font-semibold px-8 h-12"
-              >
-                <Microscope className="w-5 h-5" />
-                Try Demo Case
-              </Button>
-            </Link>
+
             <Link
               href="/cases/new"
               className="inline-flex items-center justify-center gap-2 px-8 h-12 rounded-lg border border-white/30 text-white font-semibold text-sm hover:bg-white/10 transition-colors"
@@ -209,11 +197,7 @@ export default function LandingPage() {
                 how ML and AI can support informed medical discussions.
               </p>
               <div className="flex gap-3 justify-center">
-                <Link href="/demo">
-                  <Button className="gradient-primary text-white border-0">
-                    Try Demo
-                  </Button>
-                </Link>
+
                 <Link href="/cases/new">
                   <Button variant="outline">Create Case</Button>
                 </Link>

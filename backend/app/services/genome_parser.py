@@ -50,21 +50,3 @@ def parse_genome_file(filepath: str) -> dict:
 
     raise ValueError("Genome file must contain at least one row of data.")
 
-
-def parse_demo_genome(persona: str) -> dict:
-    """Load pre-seeded demo genome data."""
-    from app.config import DEMO_DATA_DIR
-
-    filename_map = {
-        "high_risk": "persona_high_risk.csv",
-        "low_risk": "persona_low_risk.csv",
-        "moderate_risk": "persona_moderate_risk.csv",
-    }
-
-    filename = filename_map.get(persona, "persona_high_risk.csv")
-    filepath = os.path.join(DEMO_DATA_DIR, filename)
-
-    if not os.path.exists(filepath):
-        raise FileNotFoundError(f"Demo genome file not found: {filepath}")
-
-    return parse_genome_file(filepath)

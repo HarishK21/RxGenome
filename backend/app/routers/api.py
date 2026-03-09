@@ -13,7 +13,6 @@ from app.models.schemas import (
     CaseCreate, CaseResponse, FullResultsResponse,
     PredictionResponse, MedicationResponse, PGxFindingResponse,
     ReportFieldResponse, SummaryResponse, UploadResponse,
-    DemoPersona,
 )
 from app.services import orchestrator
 from app.config import UPLOAD_DIR
@@ -28,8 +27,6 @@ def create_case(case_data: CaseCreate, db: Session = Depends(get_db)):
     case = Case(
         name=case_data.name,
         condition=case_data.condition,
-        is_demo=1 if case_data.is_demo else 0,
-        demo_persona=case_data.demo_persona,
         status="created",
     )
     db.add(case)
@@ -186,79 +183,6 @@ def get_results(case_id: str, db: Session = Depends(get_db)):
         summaries=summaries,
     )
 
-
-# --- Demo endpoints ---
-@router.get("/demo/personas", response_model=list[DemoPersona])
-def get_demo_personas():
-    """Get available demo personas."""
-    return [
-        DemoPersona(
-            id="high_risk",
-            name="Sarah Chen",
-            description="45-year-old woman with BRCA1/2 variant history, currently on tamoxifen therapy. Genomic profile suggests elevated risk markers.",
-            condition="breast_cancer_risk",
-            medication="tamoxifen",
-            genotype="CYP2D6 *4/*4",
-            risk_level="high",
-        ),
-        DemoPersona(
-            id="low_risk",
-            name="James Morrison",
-            description="38-year-old man with routine genetic screening. No significant family history. Standard genomic panel shows favorable profile.",
-            condition="breast_cancer_risk",
-            medication="clopidogrel",
-            genotype="CYP2C19 *1/*1",
-            risk_level="low",
-        ),
-        DemoPersona(
-            id="moderate_risk",
-            name="Maria Rodriguez",
-            description="52-year-old woman undergoing preventive screening. Mixed genomic markers with some elevated features. On clopidogrel for cardiac history.",
-            condition="breast_cancer_risk",
-            medication="clopidogrel",
-            genotype="CYP2C19 *1/*2",
-            risk_level="moderate",
-        ),
-    ]
-
-
-@router.post("/demo/run/{persona_id}")
-def run_demo(persona_id: str, db: Session = Depends(get_db)):
-    """Create and run a demo case for a persona."""
-    personas = {
-        "high_risk": {"name": "Sarah Chen — High Risk Demo", "medication": "tamoxifen", "genotype": "*4/*4"},
-        "low_risk": {"name": "James Morrison — Low Risk Demo", "medication": "clopidogrel", "genotype": "*1/*1"},
-        "moderate_risk": {"name": "Maria Rodriguez — Moderate Risk Demo", "medication": "clopidogrel", "genotype": "*1/*2"},
-    }
-
-    persona = personas.get(persona_id)
-    if not persona:
-        raise HTTPException(status_code=404, detail="Persona not found")
-
-    # Create case
-    case = Case(
-        name=persona["name"],
-        condition="breast_cancer_risk",
-        is_demo=1,
-        demo_persona=persona_id,
-        status="processing",
-    )
-    db.add(case)
-    db.flush()
-
-    # Add medication
-    med = Medication(
-        case_id=case.id,
-        raw_name=persona["medication"],
-        canonical_name=persona["medication"],
-        source="demo",
-    )
-    db.add(med)
-    db.commit()
-
-    # Run pipeline
-    result = orchestrator.run_pipeline(case.id, db)
-    return {"case_id": case.id, **result}
 
 
 # --- Health check ---

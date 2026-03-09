@@ -256,25 +256,6 @@ RULES:
         return _mock_doctor_note(prediction, pgx, report_fields)
 
 
-# --- Mock data for when Gemini is unavailable ---
-
-def _mock_report_fields():
-    """Return mock medical report fields for demo."""
-    return [
-        {"field_name": "CA 15-3", "field_value": "28.5", "unit": "U/mL", "reference_range": "0-30", "is_abnormal": 0},
-        {"field_name": "CEA", "field_value": "4.2", "unit": "ng/mL", "reference_range": "0-5", "is_abnormal": 0},
-        {"field_name": "Hemoglobin", "field_value": "11.2", "unit": "g/dL", "reference_range": "12.0-16.0", "is_abnormal": 1},
-        {"field_name": "WBC", "field_value": "6.8", "unit": "×10³/μL", "reference_range": "4.5-11.0", "is_abnormal": 0},
-        {"field_name": "Platelet Count", "field_value": "245", "unit": "×10³/μL", "reference_range": "150-400", "is_abnormal": 0},
-        {"field_name": "ALT", "field_value": "52", "unit": "U/L", "reference_range": "7-56", "is_abnormal": 0},
-        {"field_name": "AST", "field_value": "61", "unit": "U/L", "reference_range": "10-40", "is_abnormal": 1},
-        {"field_name": "Alkaline Phosphatase", "field_value": "89", "unit": "U/L", "reference_range": "44-147", "is_abnormal": 0},
-        {"field_name": "Estrogen Receptor", "field_value": "Positive", "unit": None, "reference_range": None, "is_abnormal": 0},
-        {"field_name": "Progesterone Receptor", "field_value": "Positive", "unit": None, "reference_range": None, "is_abnormal": 0},
-        {"field_name": "HER2 Status", "field_value": "Negative", "unit": None, "reference_range": None, "is_abnormal": 0},
-        {"field_name": "Ki-67", "field_value": "22", "unit": "%", "reference_range": "<14", "is_abnormal": 1},
-    ]
-
 
 def _mock_patient_summary(prediction, pgx, report_fields):
     risk_tier = prediction.get("risk_tier", "moderate")

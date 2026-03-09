@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Dna, ArrowLeft, Beaker, Upload } from "lucide-react";
+import { Dna, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ export default function NewCasePage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [medication, setMedication] = useState("");
-  const [useDemo, setUseDemo] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,8 +25,7 @@ export default function NewCasePage() {
       const c = await createCase({
         name,
         condition: "breast_cancer_risk",
-        is_demo: useDemo,
-        demo_persona: useDemo ? "high_risk" : undefined,
+
         medication_name: medication || undefined,
       });
       router.push(`/cases/${c.id}/upload`);
@@ -103,42 +102,6 @@ export default function NewCasePage() {
             </CardContent>
           </Card>
 
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle>Data Source</CardTitle>
-              <CardDescription>Choose how to provide genomic data</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setUseDemo(false)}
-                  className={`p-4 rounded-xl border-2 text-left transition-all ${
-                    !useDemo ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
-                  }`}
-                >
-                  <Upload className="w-6 h-6 mb-2 text-primary" />
-                  <h4 className="font-medium text-sm">Upload Files</h4>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Upload your own genomic CSV/TSV data
-                  </p>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setUseDemo(true)}
-                  className={`p-4 rounded-xl border-2 text-left transition-all ${
-                    useDemo ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
-                  }`}
-                >
-                  <Beaker className="w-6 h-6 mb-2 text-primary" />
-                  <h4 className="font-medium text-sm">Demo Data</h4>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Use pre-seeded sample genomic data
-                  </p>
-                </button>
-              </div>
-            </CardContent>
-          </Card>
 
           <Button
             type="submit"

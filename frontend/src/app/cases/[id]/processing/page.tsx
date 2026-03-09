@@ -104,7 +104,7 @@ export default function ProcessingPage() {
             const stageResult = result?.stages?.[stage.key];
             let status: "pending" | "running" | "completed" | "error" = "pending";
             if (stageResult) {
-              status = stageResult.status as typeof status;
+              status = (stageResult.status as any) as "pending" | "running" | "completed" | "error";
             } else if (i < currentStage) {
               status = "completed";
             } else if (i === currentStage && !result) {
@@ -114,15 +114,14 @@ export default function ProcessingPage() {
             return (
               <div
                 key={stage.key}
-                className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ${
-                  status === "running"
-                    ? "bg-primary/5 border border-primary/20"
-                    : status === "completed"
+                className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ${status === "running"
+                  ? "bg-primary/5 border border-primary/20"
+                  : status === "completed"
                     ? "bg-muted/50"
                     : status === "error"
-                    ? "bg-destructive/5 border border-destructive/20"
-                    : "opacity-50"
-                }`}
+                      ? "bg-destructive/5 border border-destructive/20"
+                      : "opacity-50"
+                  }`}
               >
                 <span className="text-lg">{stage.icon}</span>
                 <span className="flex-1 text-sm font-medium">{stage.label}</span>
